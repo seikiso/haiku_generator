@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/haiku_maker.iml" filepath="$PROJECT_DIR$/.idea/haiku_maker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/haiku_generator.iml" filepath="$PROJECT_DIR$/.idea/haiku_generator.iml" />
     </modules>
   </component>
 </project>
