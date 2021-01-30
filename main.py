@@ -2,43 +2,59 @@ import random
 from janome.tokenizer import Tokenizer
 
 t = Tokenizer()
-f = open("static/haruto_shura.txt", 'r', encoding='shift_jis')
-d = f.read()
+file = open("static/haruto_shura.txt", 'r', encoding='shift_jis')
+data = file.read()
 
-five_char = ""
-five_char_list = []
-five_char_length = 0
+# ignore_tokens = ["一", "二", "三", "四", "五", "』", "「", "」", "を", "は", "！", "と", "の", "て", "に", "っ", "し", "で",
+#                  "》", "が", "な", "う", "《", "だ", "た", "：", "−", "・", "や", "］", "も", "へ", "　", "｜", "…", "ん",
+#                  "［", "れ", "り", "ぬ", "ゅ"]
 
-seven_char = ""
-seven_char_list = []
-seven_char_length = 0
 
-for token in t.tokenize(d):
-    if not token.reading == "*":
-        if not any(x in token.surface for x in ("。", "、", "（", "）", "『", "』", "「", "」", "を", "は", "！", "と", "の",
-                                                "て", "に", "っ", "し", "で", "》", "が", "な", "う", "《", "だ", "た",
-                                                "：", "−", "・", "や", "］", "も", "へ", "　", "｜", "…", "ん", "［", "れ",
-                                                "り")):
-            five_char_length += len(token.reading)
-            five_char += token.surface
+def generate_character_list():
+    five_character_length = 0
+    five_character = ""
+    five_character_list = []
 
-            seven_char_length += len(token.reading)
-            seven_char += token.surface
+    seven_character_length = 0
+    seven_character = ""
+    seven_character_list = []
 
-    if five_char_length == 5:
-        five_char_list.append(five_char)
+    for token in t.tokenize(data):
+        if not token.reading == "*":
+            # if not any(x in token.surface for x in ignore_tokens) and not len(token.reading) == 1:
+            if not len(token.reading) == 1:
+                five_character_length += len(token.reading)
+                five_character += token.surface
 
-    if seven_char_length == 7:
-        seven_char_list.append(seven_char)
+                seven_character_length += len(token.reading)
+                seven_character += token.surface
 
-    if five_char_length >= 5:
-        five_char = ""
-        five_char_length = 0
+        if five_character_length == 5:
+            five_character_list.append(five_character)
 
-    if seven_char_length >= 7:
-        seven_char = ""
-        seven_char_length = 0
+        if five_character_length >= 5:
+            five_character = ""
+            five_character_length = 0
 
-print(random.choice(five_char_list))
-print(random.choice(seven_char_list))
-print(random.choice(five_char_list))
+        if seven_character_length == 7:
+            seven_character_list.append(seven_character)
+
+        if seven_character_length >= 7:
+            seven_character = ""
+            seven_character_length = 0
+
+    five_character_list = list(set(five_character_list))
+    seven_character_list = list(set(seven_character_list))
+
+    return [five_character_list, seven_character_list]
+
+
+def generate_haiku():
+    print(random.choice(character_list[0]))
+    print(random.choice(character_list[1]))
+    print(random.choice(character_list[0]))
+
+
+if __name__ == '__main__':
+    character_list = generate_character_list()
+    generate_haiku()
