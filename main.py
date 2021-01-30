@@ -1,13 +1,25 @@
+import glob
 import random
 from janome.tokenizer import Tokenizer
 
 t = Tokenizer()
-file = open("static/haruto_shura.txt", 'r', encoding='shift_jis')
-data = file.read()
+# file = open("static/haruto_shura.txt", 'r', encoding='shift_jis')
+# data = file.read()
+
 
 # ignore_tokens = ["一", "二", "三", "四", "五", "』", "「", "」", "を", "は", "！", "と", "の", "て", "に", "っ", "し", "で",
 #                  "》", "が", "な", "う", "《", "だ", "た", "：", "−", "・", "や", "］", "も", "へ", "　", "｜", "…", "ん",
 #                  "［", "れ", "り", "ぬ", "ゅ"]
+
+def get_merged_str():
+    txt_list = glob.glob('static/*.txt')
+    str = ""
+
+    for txt in txt_list:
+        file = open(txt, 'r', encoding='shift_jis')
+        str += file.read()
+
+    return str
 
 
 def generate_character_list():
@@ -19,7 +31,7 @@ def generate_character_list():
     seven_character = ""
     seven_character_list = []
 
-    for token in t.tokenize(data):
+    for token in t.tokenize(merged_str):
         if not token.reading == "*":
             # if not any(x in token.surface for x in ignore_tokens) and not len(token.reading) == 1:
             if not len(token.reading) == 1:
@@ -56,5 +68,6 @@ def generate_haiku():
 
 
 if __name__ == '__main__':
+    merged_str = get_merged_str()
     character_list = generate_character_list()
     generate_haiku()
