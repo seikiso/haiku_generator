@@ -22,7 +22,7 @@ def get_merged_str():
     return str
 
 
-def generate_character_list():
+def generate_character_list(ms: str):
     five_character_length = 0
     five_character = ""
     five_character_list = []
@@ -31,7 +31,7 @@ def generate_character_list():
     seven_character = ""
     seven_character_list = []
 
-    for token in t.tokenize(merged_str):
+    for token in t.tokenize(ms):
         if not token.reading == "*":
             # if not any(x in token.surface for x in ignore_tokens) and not len(token.reading) == 1:
             if not len(token.reading) == 1:
@@ -61,13 +61,13 @@ def generate_character_list():
     return [five_character_list, seven_character_list]
 
 
-def generate_haiku():
-    print(random.choice(character_list[0]))
-    print(random.choice(character_list[1]))
-    print(random.choice(character_list[0]))
+def generate_haiku(cl: list):
+    print(random.choice(cl[0]))
+    print(random.choice(cl[1]))
+    print(random.choice(cl[0]))
 
 
 if __name__ == '__main__':
     merged_str = get_merged_str()
-    character_list = generate_character_list()
-    generate_haiku()
+    character_list = generate_character_list(merged_str)
+    generate_haiku(character_list)
